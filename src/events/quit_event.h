@@ -8,28 +8,12 @@ class quitEvent : public Event
 {
     Clock time;
     int id;
-    std::string name;
+    std::string client_name;
 
 public:
-    quitEvent(Clock &time, int id, std::string body)
-    {
-        if (body.find(' ') != std::string::npos)
-        {
-            throw eventParseError(body);
-        }
-    }
-    void execute(clubSystem *system)
-    {
-        system->add_event_to_history(this);
-        if (!system->client_exists(name))
-        {
-            errorEvent error(time, "ClientUnknown");
-            error.execute(system);
-            return;
-        }
-        system->free_table(name, time);
-        // system->ждуны
-    }
+    quitEvent(Clock &time, int id, std::string body);
+    void execute(clubSystem *system);
+    std::string to_string();
 };
 
 #endif

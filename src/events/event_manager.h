@@ -7,7 +7,7 @@
 #include "clock.h"
 #include <iostream>
 
-class eventParser
+class eventManager
 {
 public:
     std::unique_ptr<Event> create_event(const std::string &event_string)

@@ -4,6 +4,9 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(
     ComputerClub
+    src/utilities/clock.cpp
+    src/events/events.cpp
+    src/club/club_system.cpp
     src/main.cpp
     )
 
