@@ -70,6 +70,8 @@ void eventManager::create_event(const std::string &event_string)
 
 void eventManager::execute()
 {
+    if (!initialized)
+        return;
     for (auto *event : events)
     {
         event->execute(system);
