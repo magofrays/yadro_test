@@ -7,6 +7,7 @@ add_executable(
     src/utilities/clock.cpp
     src/events/events.cpp
     src/club/club_system.cpp
+    src/events/event_manager.cpp
     src/main.cpp
     )
 

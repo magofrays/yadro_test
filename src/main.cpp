@@ -1,9 +1,11 @@
-#include "club/club_system.h"
-#include "quit_event.h"
-// #include "event_parser.h"
+#include "event_manager.h"
 
 int main(int argc, char const *argv[])
 {
-
+    eventManager manager;
+    std::cin >> manager;
+    manager.execute();
+    std::cout << "\n"
+              << manager;
     return 0;
 }

@@ -20,13 +20,13 @@ public:
     }
 };
 
-class eventCreatorParseError : public std::exception
+class eventManagerParseError : public std::exception
 {
     std::string msg;
     std::string wrong_element;
 
 public:
-    eventCreatorParseError(const std::string &wrong_element) : wrong_element(wrong_element)
+    eventManagerParseError(const std::string &wrong_element) : wrong_element(wrong_element)
     {
         msg = "Error during parsing element: '" + wrong_element + "'!";
     }

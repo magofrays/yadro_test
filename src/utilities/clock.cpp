@@ -31,6 +31,8 @@ Clock::Clock(const std::string &clock_str)
     {
         throw clockParseError(clock_str);
     }
+    this->hours = hours;
+    this->minutes = minutes;
 }
 
 std::string Clock::to_string() const

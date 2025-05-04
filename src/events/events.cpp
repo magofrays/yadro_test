@@ -46,9 +46,9 @@ void quitEvent::execute(clubSystem *system)
     system->add_event_to_history(this->to_string());
     if (!system->client_exists(client_name))
         system->create_error(time, "ClientUnknown");
-    system->remove_client(client_name, time);
     if (system->client_at_table(client_name))
         system->free_table(client_name, time);
+    system->remove_client(client_name, time);
 }
 
 std::string quitEvent::to_string()
@@ -65,10 +65,10 @@ sitdownEvent::sitdownEvent(Clock &time, int id, std::string &body) : time(time),
         throw eventParseError(body);
     }
     client_name = body.substr(0, sep);
-    std::string table_num = body.substr(sep);
-    if (body.find(' ') != std::string::npos)
+    std::string table_num = body.substr(sep + 1);
+    if (table_num.find(' ') != std::string::npos)
     {
-        throw eventParseError(body);
+        throw eventParseError(table_num);
     }
     for (auto &element : table_num)
     {
@@ -82,11 +82,11 @@ sitdownEvent::sitdownEvent(Clock &time, int id, std::string &body) : time(time),
 void sitdownEvent::execute(clubSystem *system)
 {
     system->add_event_to_history(this->to_string());
-    if (system->client_exists(client_name))
+    if (!system->client_exists(client_name))
         return system->create_error(time, "ClientUnknown");
-    else if (system->is_free(table_id))
+    else if (!system->is_free(table_id - 1))
         return system->create_error(time, "PlaceIsBusy");
-    system->sitdown_client(time, client_name, table_id);
+    system->sitdown_client(time, client_name, table_id - 1);
 }
 
 std::string sitdownEvent::to_string()

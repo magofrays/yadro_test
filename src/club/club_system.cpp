@@ -1,5 +1,10 @@
 #include "club_system.h"
 
+clubSystem::clubSystem(Clock start, Clock end, int hour_cost, int tables_amount) : start(start), end(end), hour_cost(hour_cost), tables(std::vector<clubTable>(tables_amount))
+{
+    history.push_back(start.to_string());
+}
+
 void clubSystem::free_table(std::string &name, Clock &time)
 {
     int i = 0;
@@ -15,9 +20,12 @@ void clubSystem::free_table(std::string &name, Clock &time)
             break;
         }
     }
-    std::string w_name = waiting_clients.front();
-    create_sitdown(time, w_name, i);
-    waiting_clients.pop();
+    if (!waiting_clients.empty())
+    {
+        std::string w_name = waiting_clients.front();
+        create_sitdown(time, w_name, i + 1);
+        waiting_clients.pop();
+    }
 }
 
 bool clubSystem::free_table_exists()
@@ -54,13 +62,13 @@ void clubSystem::remove_client(std::string &name, Clock &time)
     current_clients.erase(std::find(current_clients.begin(), current_clients.end(), name));
 }
 
-void clubSystem::create_sitdown(Clock &time, std::string client_name, int table_id)
+void clubSystem::create_sitdown(Clock &time, std::string &client_name, int table_id)
 {
     sitdownEvent event(time, 12, client_name, table_id);
     event.execute(this);
 }
 
-void clubSystem::create_removal(Clock &time, std::string client_name)
+void clubSystem::create_removal(Clock &time, std::string &client_name)
 {
     quitEvent event(time, 11, client_name);
     event.execute(this);
@@ -84,7 +92,7 @@ bool clubSystem::client_at_table(std::string &name)
 
 bool clubSystem::client_exists(std::string &name)
 {
-    return std::find(current_clients.begin(), current_clients.end(), name) != current_clients.end();
+    return current_clients.size() > 0 && std::find(current_clients.begin(), current_clients.end(), name) != current_clients.end();
 }
 
 bool clubSystem::posible_to_arrive(Clock time)
@@ -113,4 +121,24 @@ int clubSystem::tables_amount()
 int clubSystem::wait_queue_size()
 {
     return waiting_clients.size();
+}
+
+void clubSystem::table_result()
+{
+    for (int id = 0; id != tables.size(); id++)
+    {
+        std::string result = std::to_string(id + 1) + " " + std::to_string(tables[id].earned_money) + " " + tables[id].worked.to_string();
+        history.push_back(result);
+    }
+}
+void clubSystem::finish()
+{
+    std::sort(current_clients.begin(), current_clients.end());
+    for (auto &name : current_clients)
+    {
+        create_removal(end, name);
+    }
+
+    history.push_back(end.to_string());
+    table_result();
 }

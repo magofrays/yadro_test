@@ -11,7 +11,7 @@ struct Clock
     int hours;
     int minutes;
 
-    Clock() = default;
+    Clock() : hours(0), minutes(0) {}
     Clock(const std::string &clock_str);
     std::string to_string() const;
     bool operator>(const Clock &other) const;
