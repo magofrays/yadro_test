@@ -11,7 +11,7 @@ class quitEvent : public Event
     std::string client_name;
 
 public:
-    quitEvent(Clock &time, int id, std::string body);
+    quitEvent(Clock &time, int id, std::string &body);
     void execute(clubSystem *system);
     std::string to_string();
 };

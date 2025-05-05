@@ -133,10 +133,15 @@ void clubSystem::table_result()
 }
 void clubSystem::finish()
 {
-    std::sort(current_clients.begin(), current_clients.end());
-    for (auto &name : current_clients)
+    while (!waiting_clients.empty())
     {
-        create_removal(end, name);
+        waiting_clients.pop();
+    }
+    std::vector<std::string> clients = current_clients;
+    std::sort(clients.begin(), clients.end());
+    for (auto &name : clients)
+    {
+        create_removal(end, name); // удаляет элементы на перед
     }
 
     history.push_back(end.to_string());

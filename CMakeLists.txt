@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.25)
 project(ComputerClub LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(
-    ComputerClub
-    src/utilities/clock.cpp
-    src/events/events.cpp
-    src/club/club_system.cpp
-    src/events/event_manager.cpp
-    src/main.cpp
-    )
+add_subdirectory(src)
+add_subdirectory(tst)
 
-target_include_directories(ComputerClub PRIVATE src/utilities src/events src/club)

@@ -32,7 +32,7 @@ std::string arrivalEvent::to_string()
 }
 
 // QUIT EVENT
-quitEvent::quitEvent(Clock &time, int id, std::string body) : time(time), id(id)
+quitEvent::quitEvent(Clock &time, int id, std::string &body) : time(time), id(id)
 {
     if (body.find(' ') != std::string::npos)
     {
@@ -45,7 +45,7 @@ void quitEvent::execute(clubSystem *system)
 {
     system->add_event_to_history(this->to_string());
     if (!system->client_exists(client_name))
-        system->create_error(time, "ClientUnknown");
+        return system->create_error(time, "ClientUnknown");
     if (system->client_at_table(client_name))
         system->free_table(client_name, time);
     system->remove_client(client_name, time);
@@ -109,13 +109,12 @@ void waitEvent::execute(clubSystem *system)
 {
     system->add_event_to_history(this->to_string());
     if (system->free_table_exists())
-    {
         return system->create_error(time, "ICanWaitNoLonger!");
-    }
+    if (!system->client_exists(client_name)) // почему-то в условии задания не прописано
+        return system->create_error(time, "ClientUnknown");
     if (system->tables_amount() < system->wait_queue_size())
-    {
         return system->create_removal(time, client_name);
-    }
+
     system->wait(time, client_name);
 }
 
