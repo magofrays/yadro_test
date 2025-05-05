@@ -5,5 +5,6 @@ mkdir build
 cd build
 cmake ..
 make
-./ComputerClub
 ```
+## ./src/ComputerClub - чтобы использовать программу
+## ./tst/tst - чтобы протестировать программу
